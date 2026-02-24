@@ -1,59 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+
+# سیستم احراز هویت با کد تایید (OTP)
+
+پروژه‌ای ساده برای ارسال و بررسی کد تایید از طریق پیامک با استفاده از **PromoSMS**
+
+[![نسخه PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+</div>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+سرویس پیامک: <a href="https://promosms.ir" target="_blank">promosms.ir</a>
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+آموزش کامل رو میتونید توی [مقاله ویرگول](https://vrgl.ir/rjNjR) دنبال کنید
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+> ⚠️ **هشدار امنیتی مهم**
+>
+> این پروژه صرفاً جهت **آموزش و تست** طراحی شده است.
+> قبل از استفاده در محیط Production، حتماً موارد زیر را بررسی کنید:
+> - اعتبارسنجی‌های اضافی
+> - مدیریت خطاهای پیشرفته
+> - لاگ‌گیری امنیتی
+> - رعایت قوانین حریم خصوصی
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## ویژگی‌ها
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- ارسال کد تایید ۵ رقمی به شماره موبایل
+- اعتبار کد: ۲ دقیقه
+- استفاده از سرویس PromoSMS برای ارسال پیامک
+- Rate Limit: حداکثر ۱ درخواست هر ۲ دقیقه
+- ذخیره کد در Cache
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## پیش‌نیازها
 
-### Premium Partners
+- PHP >= 8.2
+- Composer
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## نصب
 
-## Contributing
+```bash
+# کپی فایل محیطی
+copy .env.example .env
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# نصب وابستگی‌ها
+composer install
+npm install
 
-## Code of Conduct
+# تولید کلید و اجرای مهاجرت‌ها
+php artisan key:generate
+php artisan migrate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# بیلد فایل‌های استاتیک
+npm run build
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## پیکربندی
 
-## License
+فایل `.env` را تنظیم کنید:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```env
+# توکن PromoSMS
+PROMOSMS_API_TOKEN=your_api_token_here
+PROMOSMS_PATTERN_CODE_LOGIN=your_pattern_code
+```
+
+> **نکته:** الگوی پیامک باید در پنل PromoSMS ساخته شود و متغیر `data1` را برای کد تایید داشته باشد.
+
+---
+
+## مسیرهای API
+
+### ۱. ارسال کد تایید
+
+```http
+POST /api/otp/send
+Content-Type: application/json
+
+{
+    "phone": "09123456789"
+}
+```
+
+**اعتبارسنجی:**
+- شماره باید ۱۱ رقم و با فرمت `09xxxxxxxxx` باشد
+
+**پاسخ موفقیت:**
+```json
+{
+    "success": true,
+    "message": "کد تایید ارسال شد"
+}
+```
+
+---
+
+### ۲. بررسی کد تایید
+
+```http
+POST /api/otp/verify
+Content-Type: application/json
+
+{
+    "phone": "09123456789",
+    "code": "12345"
+}
+```
+
+**پاسخ موفقیت:**
+```json
+{
+    "success": true,
+    "message": "تایید هویت با موفقیت انجام شد"
+}
+```
+
+**پاسخ خطا:**
+```json
+{
+    "success": false,
+    "message": "کد تایید منقضی شده یا وجود ندارد"
+}
+```
+
+---
+
+
+## مجوز
+
+MIT

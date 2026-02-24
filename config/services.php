@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'promosms' => [
+        'token' => env('PROMOSMS_API_TOKEN'),
+        'patterns' => [
+            'login' => env('PROMOSMS_PATTERN_CODE_LOGIN')
+        ],
+    ],
 ];
